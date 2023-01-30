@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>페이징</title>
+    <style>
+      /** body {
+        transition : all 2.5s cubic-bezier(0.075, 0.82, 0.165, 1); 
+         overflow-x: hidden;
+        background-color: #e8e19b;
+      } 
+      */
+
+      section {
+        position: relative;
+        height: 100vh;
+        width: 100vw;
+        /* border-top: 1px dashed #333; */
+      }
+
+      section.active .image {
+        display: block;
+        /* opacity: 1; */
+      }
+
+      /* .innerWrap {
+        width: 340px;
+        margin-top: 50px;
+        z-index: 50;
+      } */
+      .image {
+        position: fixed;
+        right: 5%;
+        top: 20%;
+        display: none;
+        /* opacity: 0; */
+        width: 800px;
+        /* transition : all 1s ease-in-out; */
+      }
+
+      h1 {
+        color: #111;
+        text-align: center;
+        padding-top: 40vh;
+        font-size: 60px;
+      }
+      h2 {
+        color: #111;
+      }
+      p {
+        color: #333;
+        font-size: 16px;
+        line-height: 24px;
+      }
+
+      /* .pointWrap {
+        position: fixed;
+        right: 3vw;
+        top: 40%;
+        z-index: 100;
+      } */
+
+      /* .pointWrap li {
+        list-style: none;
+        width: 12px;
+        height: 12px;
+        margin-top: 15px;
+        cursor: pointer;
+        background-color: #666;
+        border-radius: 50%;
+        transition: background 0.3s ease-out;
+      } */
+
+      .pointWrap li.active {
+        background-color: #000;
+      }
+    </style>
+    <script>
+      window.onload = function () {
+        let section = document.getElementsByTagName("section");
+        // let pointBtn = document.querySelector('.pointWrap').querySelectorAll("li");
+        let pointBtn = document.querySelectorAll(".pointWrap li");
+
+        let pageNum = 0;
+        let totalNum = section.length;
+        // alert(pointBtn.length);
+
+        // pointBtn.addEventListener("click",)
+
+        for (let i = 0; i < pointBtn.length; i++) {
+          (function (idx) {
+            pointBtn[idx].onclick = function () {
+              //alert(idx);
+              pageNum = idx;
+              pageChangeFunc();
+
+              window.scrollTo({
+                top: section[pageNum].offsetTop,
+                behavior: "smooth",
+              });
+            };
+          })(i);
+        }
+
+        //스크롤 이벤트
+        window.addEventListener("scroll", function (event) {
+          let scroll = this.scrollY;
+
+          for (let i = 0; i < totalNum; i++) {
+            if (
+              scroll > section[i].offsetTop - window.outerHeight / 1.5 &&
+              scroll <
+                section[i].offsetTop -
+                  window.outerHeight / 1.5 +
+                  section[i].offsetHeight
+            ) {
+              pageNum = i;
+              break;
+            }
+          }
+          pageChangeFunc();
+        });
+
+        //페이지 변경
+        function pageChangeFunc() {
+          for (let i = 0; i < totalNum; i++) {
+            section[i].classList.remove("active");
+            // section[i].className = "";
+            pointBtn[i].classList.remove("active");
+          }
+          section[pageNum].classList.add("active");
+          pointBtn[pageNum].classList.add("active");
+        }
+
+        //페이지 로드되면 바로 실행
+        pageChangeFunc();
+      };
+    </script>
+  </head>
+  <body class="overflow-x-hidden bg-yellow-200">
+    <ul class="pointWrap fixed top-1/3 right-3 z-100">
+      <li
+        class="list-none w-3 h-3 mt-4 cursor-pointer bg-gray-300 border rounded-full ease-out"
+      ></li>
+      <li
+        class="list-none w-3 h-3 mt-4 cursor-pointer bg-gray-300 border rounded-full ease-out"
+      ></li>
+      <li
+        class="list-none w-3 h-3 mt-4 cursor-pointer bg-gray-300 border rounded-full ease-out"
+      ></li>
+      <li
+        class="list-none w-3 h-3 mt-4 cursor-pointer bg-gray-300 border rounded-full ease-out"
+      ></li>
+      <li
+        class="list-none w-3 h-3 mt-4 cursor-pointer bg-gray-300 border rounded-full ease-out"
+      ></li>
+      <li
+        class="list-none w-3 h-3 mt-4 cursor-pointer bg-gray-300 border rounded-full ease-out"
+      ></li>
+      <li
+        class="list-none w-3 h-3 mt-4 cursor-pointer bg-gray-300 border rounded-full ease-out"
+      ></li>
+      <li
+        class="list-none w-3 h-3 mt-4 cursor-pointer bg-gray-300 border rounded-full ease-out"
+      ></li>
+    </ul>
+
+    <section>
+      <h1 class="text-9xl font-semibold text-purple-100">
+        NFT 개구리 이미지를 만들어볼까요?
+      </h1>
+    </section>
+
+    <section>
+      <div class="innerWrap px-40 space-y-6">
+        <h2 class="text-6xl font-semibold">Step 1</h2>
+        <p class="text-xl">배경이미지를 깔아줍니다</p>
+      </div>
+      <img src="./image/img_1.png" class="image" alt="배경" />
+    </section>
+
+    <section>
+      <div class="innerWrap">
+        <h2>Step 2</h2>
+        <p>배경 데코레이션을 넣어줍니다</p>
+      </div>
+      <img src="./image/img_1.png" class="image" alt="배경" />
+      <img src="./image/img_2.png" class="image" alt="내리는 눈" />
+    </section>
+
+    <section>
+      <div class="innerWrap">
+        <h2>Step 3</h2>
+        <p>얼굴을 그려줍니다</p>
+      </div>
+      <img src="./image/img_1.png" class="image" alt="배경" />
+      <img src="./image/img_2.png" class="image" alt="내리는 눈" />
+      <img src="./image/img_3.png" class="image" alt="얼굴" />
+    </section>
+
+    <section>
+      <div class="innerWrap">
+        <h2>Step 4</h2>
+        <p>파란색 슈트 옷을 입혀줍니다</p>
+      </div>
+      <img src="./image/img_1.png" class="image" alt="배경" />
+      <img src="./image/img_2.png" class="image" alt="내리는 눈" />
+      <img src="./image/img_3.png" class="image" alt="얼굴" />
+      <img src="./image/img_4.png" class="image" alt="옷" />
+    </section>
+
+    <section>
+      <div class="innerWrap">
+        <h2>Step 5</h2>
+        <p>반짝이는 눈을 그려줍니다</p>
+      </div>
+      <img src="./image/img_1.png" class="image" alt="배경" />
+      <img src="./image/img_2.png" class="image" alt="내리는 눈" />
+      <img src="./image/img_3.png" class="image" alt="얼굴" />
+      <img src="./image/img_4.png" class="image" alt="옷" />
+      <img src="./image/img_5.png" class="image" alt="눈" />
+    </section>
+
+    <section>
+      <div class="innerWrap">
+        <h2>Step 6</h2>
+        <p>웃고 있는 입술을 그려줍니다</p>
+      </div>
+      <img src="./image/img_1.png" class="image" alt="배경" />
+      <img src="./image/img_2.png" class="image" alt="내리는 눈" />
+      <img src="./image/img_3.png" class="image" alt="얼굴" />
+      <img src="./image/img_4.png" class="image" alt="옷" />
+      <img src="./image/img_5.png" class="image" alt="눈" />
+      <img src="./image/img_6.png" class="image" alt="입술" />
+    </section>
+
+    <section>
+      <div class="innerWrap">
+        <h2>Step 7</h2>
+        <p>콧구멍을 그려주고 마무리해줍니다</p>
+      </div>
+      <img src="./image/img_1.png" class="image" alt="배경" />
+      <img src="./image/img_2.png" class="image" alt="내리는 눈" />
+      <img src="./image/img_3.png" class="image" alt="얼굴" />
+      <img src="./image/img_4.png" class="image" alt="옷" />
+      <img src="./image/img_5.png" class="image" alt="눈" />
+      <img src="./image/img_6.png" class="image" alt="입술" />
+      <img src="./image/img_7.png" class="image" alt="코" />
+    </section>
+  </body>
+</html>
